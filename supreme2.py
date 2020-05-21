@@ -24,13 +24,19 @@ for item in new_items:
 # print(item_links)
 # print(len(item_links))
 
-csv_file = open('supreme_newdrops.csv', 'w', encoding='utf-8', newline='')
+csv_file = open('supreme_newdrops_week13_updated.csv', 'w', encoding='utf-8', newline='')
 writer = csv.writer(csv_file)
+
+timevisit = driver.find_element_by_xpath('//time[@data-timezone-offset="-14400"]')
+scrape_datetime = timevisit.find_element_by_tag_name('b').text
+print(scrape_datetime)
+writer.writerow(["Name", "Color", "Description", "Price", "Availability", "Image"])
+#writer.writerow(scrape_datetime)
 
 for link in item_links:
      item_dict = {}
      driver.get(link)
-     sleep(1)
+     #sleep(1)
      try: 
      	details = driver.find_element_by_xpath('//div[@id="details"]')
      	item_name = details.find_element_by_tag_name('h2').text
@@ -74,6 +80,8 @@ for link in item_links:
      item_dict['Availability'] = item_availability
      item_dict['Image'] = item_image
 
+     
+
      writer.writerow(item_dict.values())
 
      # print('ItemName = {}'.format(item_name))
@@ -81,7 +89,7 @@ for link in item_links:
      # print('ItemDescription = {}'.format(item_description))
      # print('ItemPrice = {}'.format(item_price))
      # print('ItemAvailability = {}'.format(item_availability))
-
+writer.writerow([scrape_datetime, " ", " ", " ", " ", " "])
 csv_file.close()
 driver.close()
 
