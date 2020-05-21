@@ -24,7 +24,7 @@ for item in new_items:
 # print(item_links)
 # print(len(item_links))
 
-csv_file = open('supreme_newdrops_week13_updated.csv', 'w', encoding='utf-8', newline='')
+csv_file = open('supreme_newdrops_week14.csv', 'w', encoding='utf-8', newline='')
 writer = csv.writer(csv_file)
 
 timevisit = driver.find_element_by_xpath('//time[@data-timezone-offset="-14400"]')
