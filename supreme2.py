@@ -1,8 +1,5 @@
 from selenium import webdriver
-#from selenium.webdriver.common.keys import Keys
-#from selenium.webdriver.common.action_chains import ActionChains
 import selenium.webdriver.support.ui as ui
-from time import sleep
 import re
 import csv
 
@@ -11,9 +8,14 @@ import csv
 
 driver = webdriver.Chrome()
 
-#actions = ActionChains(driver)
+
+## Fetching the new drops website
 
 driver.get("https://www.supremenewyork.com/shop/new")
+
+
+
+## Creating dictionary of urls for new items
 
 new_items = driver.find_elements_by_xpath('//a[@style="height:81px;"]')
 item_links = []
@@ -21,22 +23,31 @@ for item in new_items:
 	item_link = item.get_attribute("href")
 	item_links.append(item_link)
 
-# print(item_links)
-# print(len(item_links))
+
+
+
+## Creating new csv file 
 
 csv_file = open('supreme_newdrops_week14.csv', 'w', encoding='utf-8', newline='')
 writer = csv.writer(csv_file)
 
 timevisit = driver.find_element_by_xpath('//time[@data-timezone-offset="-14400"]')
 scrape_datetime = timevisit.find_element_by_tag_name('b').text
-print(scrape_datetime)
+
+
+
+## Writing header for csv file
+
 writer.writerow(["Name", "Color", "Description", "Price", "Availability", "Image"])
-#writer.writerow(scrape_datetime)
+
+
+
+
+## Cycling through links for every new item; creating dictionary of desired information; writing that dictionary to the csv file
 
 for link in item_links:
      item_dict = {}
      driver.get(link)
-     #sleep(1)
      try: 
      	details = driver.find_element_by_xpath('//div[@id="details"]')
      	item_name = details.find_element_by_tag_name('h2').text
@@ -44,7 +55,6 @@ for link in item_links:
      	print(f'Couldn\'t get name!')
      	item_name = "Name Not Found"
      try:
-     	#pricing = driver.frind_element_by_xpath('//p[@class="price"]')
      	item_price = details.find_element_by_tag_name('span').text
      except:
      	print(f'Couldn\'t get price!')
@@ -62,7 +72,6 @@ for link in item_links:
      try:
      	item_availability = driver.find_element_by_xpath('//b[@class="button sold-out"]').text
      except:
-     	#print(f'Item In Stock')
      	item_availability = "In Stock"
      try:
           img = driver.find_element_by_xpath('//img[@id="img-main"]')
@@ -84,12 +93,17 @@ for link in item_links:
 
      writer.writerow(item_dict.values())
 
-     # print('ItemName = {}'.format(item_name))
-     # print('ItemColor = {}'.format(item_color))
-     # print('ItemDescription = {}'.format(item_description))
-     # print('ItemPrice = {}'.format(item_price))
-     # print('ItemAvailability = {}'.format(item_availability))
+    
+
+
+
+## Writing the date and time of the scrape to the last row of the csv
+
 writer.writerow([scrape_datetime, " ", " ", " ", " ", " "])
+
+
+## closing the file and exiting the driver
+
 csv_file.close()
 driver.close()
 
