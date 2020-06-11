@@ -11,4 +11,6 @@ The last row of the created csv is the date and time of scraping.
 
 I manually change the title of the csv file before scraping every week.
 
-Have scraped week 13 releases as of May 21, 2020. 
+Have scraped week 16 releases as of June 11, 2020 
+
+Note: The Week 15 drop scheduled for June 4 was cancelled - no data for this week. 
